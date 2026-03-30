@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>will you be my girlfriend? 💗</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* biar ga kepilih teks pas klik2 */
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #ffe6f0 0%, #ffc0cb 100%);
+            font-family: 'Poppins', 'Segoe UI', 'Quicksand', system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* container utama */
+        .main-container {
+            max-width: 550px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        /* kartu putih aesthetic */
+        .love-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 2rem 1.8rem 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.6);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        /* judul utama */
+        .main-question {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e85d8f;
+            margin-bottom: 2rem;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(232, 93, 143, 0.1);
+            word-break: keep-all;
+        }
+
+        /* area tombol */
+        .button-area {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 1.2rem 0 1.5rem;
+            position: relative;
+            min-height: 85px;
+        }
+
+        .btn {
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.35rem;
+            padding: 12px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1), background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-yes {
+            background: #ff98b9;
+            color: white;
+            box-shadow: 0 8px 18px #ff98b966;
+            border: 1px solid #ffbfd0;
+            transform-origin: center;
+        }
+
+        .btn-yes:hover {
+            background: #ff7ca3;
+            transform: scale(1.02);
+        }
+
+        .btn-no {
+            background: #e2e0e0;
+            color: #a17c7c;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.1s ease;
+            position: relative;
+        }
+
+        /* area karakter lucu (GIF/animasi) */
+        .cute-gif {
+            margin: 25px 0 10px;
+            text-align: center;
+        }
+
+        .cute-gif img {
+            max-width: 130px;
+            width: 100%;
+            border-radius: 40px;
+            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s;
+        }
+
+        .cute-gif img:hover {
+            transform: scale(1.02);
+        }
+
+        /* fallback buat GIF karakter lucu pake emoji lucu (kalau gif eksternal gak bisa, pakai animasi CSS) */
+        .cute-emoji-fallback {
+            font-size: 70px;
+            animation: bounceSoft 2s infinite;
+            display: inline-block;
+            cursor: default;
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* animasi hati jatuh */
+        .heart-fall {
+            position: fixed;
+            pointer-events: none;
+            top: -30px;
+            font-size: 24px;
+            z-index: 999;
+            animation: fall linear forwards;
+            opacity: 0.9;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* tampilan setelah klik yes */
+        .result-screen {
+            background: rgba(255, 250, 245, 0.98);
+            border-radius: 48px;
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            animation: popResult 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes popResult {
+            0% {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+            80% {
+                transform: scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-message {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #e85d8f;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .sub-message {
+            font-size: 1.2rem;
+            color: #b35d7a;
+            margin-top: 12px;
+        }
+
+        .heart-emoji-big {
+            font-size: 60px;
+            display: inline-block;
+            animation: pulseHeart 0.7s infinite alternate;
+        }
+
+        @keyframes pulseHeart {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); text-shadow: 0 0 8px #ff90b5; }
+        }
+
+        /* responsive */
+        @media (max-width: 500px) {
+            .main-question {
+                font-size: 1.7rem;
+            }
+            .btn {
+                font-size: 1.1rem;
+                padding: 10px 22px;
+            }
+            .button-area {
+                gap: 1.2rem;
+            }
+            .result-message {
+                font-size: 1.7rem;
+            }
+            .cute-gif img {
+                max-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container" id="appContainer">
+    <!-- tampilan awal akan diisi JS -->
+</div>
+
+<script>
+    // ------------------- UTILITY -------------------
+    // elemen container
+    const container = document.getElementById('appContainer');
+
+    // fungsi untuk membuat tampilan awal (kartu dengan tombol)
+    function renderInitialCard() {
+        return `
+            <div class="love-card" id="loveCard">
+                <div class="main-question">
+                    💗 Will you be my girlfriend? 💗
+                </div>
+                <div class="button-area" id="buttonArea">
+                    <button class="btn btn-yes" id="yesButton">Yes 😍</button>
+                    <button class="btn btn-no" id="noButton">No 😢</button>
+                </div>
+                <div class="cute-gif" id="cuteGifZone">
+                    <!-- karakter lucu versi GIF (base64 SVG animated kecil + emoji lucu animasi) -->
+                    <div style="display: inline-block;">
+                        <img src="https://media1.tenor.com/m/-lPzZvU8zVUAAAAC/cat-love.gif" 
+                             alt="cute cat love" 
+                             style="max-width:130px; border-radius:30px; width:100%;"
+                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'cute-emoji-fallback\' style=\'font-size:70px;\'>🐱💕🥺</div>';">
+                    </div>
+                    <div style="font-size: 13px; margin-top: 8px; color:#e285a3;">✨ aku sayang kamu ✨</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // fungsi membuat layar hasil setelah YES
+    function renderResultScreen() {
+        return `
+            <div class="result-screen" id="resultScreen">
+                <div class="heart-emoji-big">❤️❤️❤️</div>
+                <div class="result-message">
+                    YAYYY ❤️ Kamu sekarang milikku 😍
+                </div>
+                <div class="sub-message">
+                    💗 janji bakal jadi yang terbaik buat kamu 💗
+                </div>
+                <div class="cute-gif" style="margin-top: 30px;">
+                    <img src="https://media1.tenor.com/m/-pS9cF3Cv1oAAAAC/cat-hug.gif" 
+                         alt="happy cat" 
+                         style="max-width:120px; border-radius:30px;"
+                         onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\'font-size:70px;\'>🐱💖🥰</div>';">
+                    <div style="margin-top: 12px; font-size: 0.9rem;">💕 I LOVE YOU 💕</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // fungsi memulai animasi hati jatuh terus menerus
+    let heartInterval = null;
+    function startFallingHearts() {
+        if (heartInterval) clearInterval(heartInterval);
+        heartInterval = setInterval(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-fall';
+            const heartList = ['❤️', '💖', '💗', '💓', '💘', '💕', '💞', '💝'];
+            heart.innerText = heartList[Math.floor(Math.random() * heartList.length)];
+            const randomLeft = Math.random() * window.innerWidth;
+            heart.style.left = randomLeft + 'px';
+            heart.style.fontSize = (16 + Math.random() * 28) + 'px';
+            heart.style.animationDuration = 2 + Math.random() * 2.5 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => {
+                if (heart && heart.remove) heart.remove();
+            }, 3000);
+        }, 180);
+    }
+
+    // stop animasi hati (opsional)
+    function stopFallingHearts() {
+        if (heartInterval) {
+            clearInterval(heartInterval);
+            heartInterval = null;
+        }
+        const allHearts = document.querySelectorAll('.heart-fall');
+        allHearts.forEach(h => h.remove());
+    }
+
+    // handler YES
+    function handleYesClick() {
+        // stop semua perilaku tombol no
+        if (window.noMoveInterval) clearInterval(window.noMoveInterval);
+        if (window.noTimeout) clearTimeout(window.noTimeout);
+        // bersihkan event hover / mouseenter yang nempel
+        const noBtn = document.getElementById('noButton');
+        if (noBtn) {
+            noBtn.removeEventListener('mouseenter', moveNoButton);
+            noBtn.removeEventListener('touchstart', moveNoButton);
+        }
+
+        // ganti tampilan jadi result screen
+        container.innerHTML = renderResultScreen();
+        startFallingHearts();  // animasi hati jatuh dimulai
+
+        // tambahan efek suka2 : getar (kalau support)
+        if (navigator.vibrate) navigator.vibrate(200);
+    }
+
+    // Fungsi untuk memindahkan tombol NO secara random (tapi tetap dalam batas buttonArea)
+    let currentNoTransform = { x: 0, y: 0 };
+    function moveNoButton() {
+        const noBtn = document.getElementById('noButton');
+        const btnArea = document.getElementById('buttonArea');
+        if (!noBtn || !btnArea) return;
+
+        // batas area agar tombol tidak keluar dari area tombol
+        const areaRect = btnArea.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+
+        // batas pergerakan relatif terhadap parent (buttonArea)
+        // Kita pake margin-left/margin-top dengan posisi relative
+        const maxShiftX = (areaRect.width - btnRect.width) * 0.7;
+        const maxShiftY = (areaRect.height - btnRect.height) * 0.7;
+
+        let randomX = (Math.random() - 0.5) * maxShiftX * 1.6;
+        let randomY = (Math.random() - 0.5) * maxShiftY * 1.3;
+
+        // batasi agar tidak keluar visual
+        randomX = Math.min(Math.max(randomX, -maxShiftX), maxShiftX);
+        randomY = Math.min(Math.max(randomY, -maxShiftY), maxShiftY);
+        
+        noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        currentNoTransform = { x: randomX, y: randomY };
+    }
+
+    // fungsi memperbesar tombol Yes dan mengecilkan tombol No sedikit opsional
+    let yesScale = 1;
+    const MAX_SCALE = 2.8;
+    function enlargeYesButton() {
+        const yesBtn = document.getElementById('yesButton');
+        if (!yesBtn) return;
+        if (yesScale < MAX_SCALE) {
+            yesScale += 0.09;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            yesBtn.style.transition = 'transform 0.1s cubic-bezier(0.2, 1.2, 0.8, 1)';
+        }
+        // efek kecil ke tombol no (opsional: sedikit mengecil)
+        const noBtn = document.getElementById('noButton');
+        if (noBtn && yesScale > 1.2) {
+            let currentNoScale = 1 - (yesScale - 1) * 0.1;
+            if (currentNoScale < 0.7) currentNoScale = 0.7;
+            noBtn.style.transform = `translate(${currentNoTransform.x}px, ${currentNoTransform.y}px) scale(${currentNoScale})`;
+        }
+    }
+
+    // reset scale ketika tombol no di hover terlalu sering? tapi biar scale yes tetap membesar
+    // event: setiap kali kursor mendekati No (mouseenter/touchstart) -> pindah + perbesar YES
+    let hoverCount = 0;
+    function onNoApproach() {
+        // pindahkan tombol no
+        moveNoButton();
+        // perbesar tombol YES
+        enlargeYesButton();
+        // efek tambahan: sedikit gemetar tombol no (opsional)
+        const noBtn = document.getElementById('noButton');
+        if (noBtn) {
+            noBtn.style.transition = 'transform 0.12s ease-out';
+            setTimeout(() => {
+                if (noBtn) noBtn.style.transition = 'transform 0.18s cubic-bezier(0.2,0.9,0.4,1.1)';
+            }, 120);
+        }
+        hoverCount++;
+        // setelah beberapa kali, tombol YES jadi besar banget dan NO makin susah ditekan
+        if (yesScale >= 2.2) {
+            const yesBtn = document.getElementById('yesButton');
+            if (yesBtn) {
+                yesBtn.style.boxShadow = "0 12px 26px #ff98b9cc";
+            }
+        }
+    }
+
+    // fungsi untuk inisialisasi semua event interaktif
+    function bindInteractiveEvents() {
+        const noButton = document.getElementById('noButton');
+        const yesButton = document.getElementById('yesButton');
+        if (!noButton || !yesButton) return;
+
+        // reset scale awal
+        yesScale = 1;
+        yesButton.style.transform = 'scale(1)';
+        noButton.style.transform = 'translate(0px, 0px)';
+        currentNoTransform = { x: 0, y: 0 };
+        
+        // hapus listener lama (biar ga dobel)
+        noButton.removeEventListener('mouseenter', onNoApproach);
+        noButton.removeEventListener('touchstart', onNoApproach);
+        yesButton.removeEventListener('click', handleYesClick);
+        
+        // pasang event untuk NO (hover / sentuh mendekati)
+        noButton.addEventListener('mouseenter', onNoApproach);
+        // untuk sentuhan di HP: saat jari menyentuh tombol NO, langsung kabur juga
+        noButton.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // sedikit prevent biar gak langsung kena klik
+            onNoApproach();
+        });
+        
+        // tombol YES
+        yesButton.addEventListener('click', handleYesClick);
+        
+        // juga agar tombol YES tidak bisa di-“hover kabur” : tetap aman
+        // tambahan: jika mouse meninggalkan area NO tidak apa
+        
+        // bonus: ketika cursor ada di area button area, NO bisa tetap kabur
+        const btnArea = document.getElementById('buttonArea');
+        if (btnArea) {
+            btnArea.addEventListener('mouseenter', () => {
+                // sedikit random: jika tombol no belum terlalu besar scaling, tetep aktif
+                if (yesScale < 1.9) {
+                    setTimeout(() => {
+                        if (document.getElementById('noButton')) moveNoButton();
+                    }, 30);
+                }
+            });
+        }
+        
+        // reset posisi NO saat ukuran layar berubah agar tidak ke luar bounds
+        window.addEventListener('resize', () => {
+            if (noButton && document.getElementById('loveCard')) {
+                noButton.style.transform = 'translate(0px, 0px)';
+                currentNoTransform = { x: 0, y: 0 };
+                // reset scale yes ga perlu direset total, biar tetap lucu
+            }
+        });
+    }
+
+    // tambahan efek tombol YES juga bisa membesar jika NO berkali-kali diganggu
+    // untuk memastikan setiap NO didekati (hover) YES membesar, sudah di onNoApproach
+
+    // render awal dan pasang event
+    function init() {
+        container.innerHTML = renderInitialCard();
+        bindInteractiveEvents();
+        // pastikan heart interval tidak aktif sebelum YES ditekan
+        stopFallingHearts();
+        // hapus sisa hati jatuh yang mungkin masih ada
+        const leftovers = document.querySelectorAll('.heart-fall');
+        leftovers.forEach(l => l.remove());
+    }
+
+    init();
+</script>
+</body>
+</html>
